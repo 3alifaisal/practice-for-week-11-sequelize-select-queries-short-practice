@@ -20,8 +20,10 @@ app.use(express.json());
 // No WHERE clause
 app.get('/puppies', async (req, res, next) => {
     let allPuppies;
-
+    allPuppies = await Puppy.findAll();
     // Your code here
+
+
 
     res.json(allPuppies);
 });
@@ -34,6 +36,14 @@ app.get('/puppies/chipped', async (req, res, next) => {
     let chippedPuppies;
 
     // Your code here
+    chippedPuppies = await Puppy.findAll({
+        where: {
+            microchipped: true
+        },
+        order: [
+            ['ageYrs','DESC']
+        ]
+    })
 
     res.json(chippedPuppies);
 });
@@ -46,6 +56,12 @@ app.get('/puppies/name/:name', async (req, res, next) => {
     let puppyByName;
     
     // Your code here
+    puppyByName = await Puppy.findOne({
+        where: {
+            name: req.params.name
+        }
+    })
+    
 
     res.json(puppyByName);
 })
@@ -56,8 +72,18 @@ app.get('/puppies/name/:name', async (req, res, next) => {
 // WHERE clause with a comparison
 app.get('/puppies/shepherds', async (req, res, next) => {
     let shepherds;
-    
+
     // Your code here
+    shepherds = await Puppy.findAll({
+        order: [
+            ['name', 'DESC']
+        ],
+        where: {
+            breed: {
+                [Op.like]: '%Shepherd'
+            }
+        }
+    })
 
     res.json(shepherds);
 })
@@ -68,7 +94,19 @@ app.get('/puppies/shepherds', async (req, res, next) => {
 // WHERE clause with multiple attributes and comparisons
 app.get('/puppies/tinybabies', async (req, res, next) => {
     let tinyBabyPuppies;
-    
+    tinyBabyPuppies = await Puppy.findAll({
+        where: {
+            ageYrs: {
+                [Op.lt]: 1
+            },
+            weightLbs: {
+                [Op.lt]: 20
+            }
+        },
+        order: [
+            ["ageYrs","ASC"],["weightLbs","ASC"]
+        ]
+    })
     // Your code here
 
     res.json(tinyBabyPuppies);
@@ -80,8 +118,9 @@ app.get('/puppies/tinybabies', async (req, res, next) => {
 // Finding one record by primary key
 app.get('/puppies/:id', async (req, res, next) => {
     let puppyById;
-    
+
     // Your code here
+    puppyById = await Puppy.findByPk((req.params.id))
     
     res.json(puppyById);
 });

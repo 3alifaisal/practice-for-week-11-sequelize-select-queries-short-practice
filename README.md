@@ -74,6 +74,8 @@ Test the route in your browser. You should see the following puppies returned:
 Complete the route for `/puppies/name/:name`. It should query the database for 
 the one puppy that has a `name` that matches the `name` param in the request.
 
+
+
 Test the route in your browser. Navigating to `/puppies/name/Cooper` should 
 return only the data for Cooper, `puppies/name/Kota` should return only the data 
 for Kota, etc.
@@ -83,6 +85,10 @@ for Kota, etc.
 
 Complete the route for `/puppies/:id`. Notice that this route is at the bottom 
 of __app.js__. Can you think of why this is necessary?
+
+
+because if its on top the other subqueries starting with puppies/name will be neglected 
+
 
 This endpoint should query the database for the one puppy that has an `id` that 
 matches the `id` param in the request. Do not use `findOne` method to complete 
